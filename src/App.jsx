@@ -3,10 +3,20 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ClipLoader, PacmanLoader } from "react-spinners";
 import logo from "./assets/Deliveroo-logo.png";
+import { FaStar } from "react-icons/fa";
+import defaultImage from "./assets/default-meal.png";
 
 function App() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const formatString = (str) => {
+    if (str.length < 60) {
+      return str;
+    } else {
+      return str.slice(0, 60) + "...";
+    }
+  };
 
   // console.log("composant déclenché");
 
@@ -54,23 +64,50 @@ function App() {
           </section>
           <main>
             <div className="wrapper">
-              <section>
+              <section className="menu">
                 {data.categories.map((category, index) => {
                   // console.log(category); // {name: 'Salades', meals: Array(7)}
 
                   return (
-                    <div>
-                      <p key={index}>{category.name}</p>
-                      {category.meals.map((meals, index) => {
-                        // console.log(meals); // {id: '1519055545-91', title: 'Fromage blanc bio au miel', description: '', price: '10.40'}
-                        return;
-                        <div key={meals.id} className="meal">
-                          <div>
-                            <h3>{meals.title}</h3>
-                          </div>
-                        </div>;
-                      })}
-                    </div>
+                    category.meals.length > 0 && (
+                      <div className="menu-card" key={index}>
+                        <h2>{category.name}</h2>
+                        <div className="card">
+                          {category.meals.map((meals, index) => {
+                            // console.log(meals); // {id: '1519055545-91', title: 'Fromage blanc bio au miel', description: '', price: '10.40'}
+                            return (
+                              <div key={meals.id} className="meal">
+                                <div>
+                                  <h3>{meals.title}</h3>
+                                  <p>{formatString(meals.description)}</p>
+                                  <div className="price-popu">
+                                    <p className="price">
+                                      {meals.price + " €"}
+                                    </p>
+                                    {meals.popular && (
+                                      <p className="popular">
+                                        <FaStar /> Populaire
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                {meals.picture ? (
+                                  <img
+                                    src={meals.picture}
+                                    alt="presentation du plat"
+                                  />
+                                ) : (
+                                  <img
+                                    src={defaultImage}
+                                    alt="presentation du plat"
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )
                   );
                 })}
               </section>
