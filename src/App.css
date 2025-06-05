@@ -121,4 +121,6 @@ p.popular {
   background-color: white;
   position: sticky;
   top: 30px;
+  padding: 20px;
+  line-height: 19px;
 }

@@ -132,8 +132,22 @@ function App() {
                 })}
               </section>
               <section className="bucket">
-                <p>Votre panier est vide</p>
-                <div>console.log(copy);</div>
+                {basket.length > 0 ? (
+                  <div>
+                    {basket.map((index) => {
+                      return (
+                        <div>
+                          <button>-</button>
+                          <span>0</span>
+                          <button>+</button>
+                          {index.title} {index.price}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p>Votre panier est vide</p>
+                )}
               </section>
             </div>
           </main>
