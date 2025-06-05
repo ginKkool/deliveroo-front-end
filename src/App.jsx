@@ -9,6 +9,7 @@ import defaultImage from "./assets/default-meal.png";
 function App() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [basket, setBasket] = useState([]);
 
   const formatString = (str) => {
     if (str.length < 60) {
@@ -41,6 +42,16 @@ function App() {
       // console.log(error.message);
     }
   }, []);
+
+  const getTotal = (array) => {
+    const initialValue = 0;
+    const sumWithInitial = array.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.price * currentValue.quantity,
+      initialValue
+    );
+    return sumWithInitial.toFixed(2);
+  };
 
   return (
     <>
@@ -76,7 +87,16 @@ function App() {
                           {category.meals.map((meals, index) => {
                             // console.log(meals); // {id: '1519055545-91', title: 'Fromage blanc bio au miel', description: '', price: '10.40'}
                             return (
-                              <div key={meals.id} className="meal">
+                              <div
+                                key={meals.id}
+                                className="meal"
+                                onClick={() => {
+                                  console.log(meals);
+                                  const copy = [...basket];
+                                  copy.push(meals);
+                                  setBasket(copy);
+                                }}
+                              >
                                 <div>
                                   <h3>{meals.title}</h3>
                                   <p>{formatString(meals.description)}</p>
@@ -110,6 +130,10 @@ function App() {
                     )
                   );
                 })}
+              </section>
+              <section className="bucket">
+                <p>Votre panier est vide</p>
+                <div>console.log(copy);</div>
               </section>
             </div>
           </main>
